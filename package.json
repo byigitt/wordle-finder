@@ -1,0 +1,16 @@
+{
+  "name": "wordle-kelime-bulucu",
+  "version": "1.0.0",
+  "description": "bundle'nin wordle oyunu için harflerden kelime bulucu",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "type": "module",
+  "keywords": [],
+  "author": "byigitt",
+  "license": "MIT",
+  "dependencies": {
+    "readline-sync": "^1.4.10"
+  }
+}
