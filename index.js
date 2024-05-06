@@ -2,8 +2,8 @@ import readline from "readline-sync";
 import fs from "fs";
 
 let incl = [];
-let letters = readline.question("Enter the letters: ").split("");
-let blacklisted = readline.question("Enter the blacklisted letters: ").split("");
+let letters = readline.question("[+] harfleri birlesik bir bicimde giriniz (ornek: abc): ").split("");
+let blacklisted = readline.question("[+] yasakli harfleri birlesik bir bicimde giriniz (ornek: abc): ").split("");
 const words = JSON.parse(fs.readFileSync("words.json", "utf8"));
 
 for (let i = 0; i < words.length; i++) {
@@ -14,4 +14,5 @@ for (let i = 0; i < words.length; i++) {
     incl.push(words[i]);
 }
 
-console.log(incl);
+console.log(`[+] ${incl.length} kelime bulundu.`);
+console.log(`[~] kelimeler: ${incl.join(", ")}`);
