@@ -9,9 +9,10 @@ const words = JSON.parse(fs.readFileSync("words.json", "utf8"));
 for (let i = 0; i < words.length; i++) {
   if (
     letters.every((letter) => words[i].includes(letter)) &&
-    !blacklisted.some((blacklist) => words[i].includes(blacklist))
-  )
+    !blacklisted.some((blacklist) => words[i].normalize("NFD").includes(blacklist.normalize("NFD")))
+  ) {
     incl.push(words[i]);
+  }
 }
 
 console.log(`[+] ${incl.length} kelime bulundu.`);
