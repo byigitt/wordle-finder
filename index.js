@@ -1,19 +1,36 @@
-import readline from "readline-sync";
+import readline from "readline";
 import fs from "fs";
 
 let incl = [];
-let letters = readline.question("[+] harfleri birlesik bir bicimde giriniz (ornek: abc): ").split("");
-let blacklisted = readline.question("[+] yasakli harfleri birlesik bir bicimde giriniz (ornek: abc): ").split("");
 const words = JSON.parse(fs.readFileSync("words.json", "utf8"));
 
-for (let i = 0; i < words.length; i++) {
-  if (
-    letters.every((letter) => words[i].includes(letter)) &&
-    !blacklisted.some((blacklist) => words[i].normalize("NFD").includes(blacklist.normalize("NFD")))
-  ) {
-    incl.push(words[i]);
-  }
-}
+const question = (question) => {
+  const rl = readline.createInterface({
+    input: process.stdin,
+    output: process.stdout,
+  });
 
-console.log(`[+] ${incl.length} kelime bulundu.`);
-console.log(`[~] kelimeler: ${incl.join(", ")}`);
+  return new Promise((resolve) => {
+    rl.question(question, (answer) => {
+      rl.close();
+      return resolve(answer);
+    });
+  });
+};
+
+(async () => {
+  let letters = (await question("[+] harfleri birlesik bir bicimde giriniz (ornek: abc): ")).split("");
+  let blacklisted = (await question("[+] yasakli harfleri birlesik bir bicimde giriniz (ornek: abc): ")).split("");
+
+  for (let i = 0; i < words.length; i++) {
+    if (
+      letters.every((letter) => words[i].includes(letter)) &&
+      !blacklisted.some((blacklist) => words[i].includes(blacklist))
+    ) {
+      incl.push(words[i]);
+    }
+  }
+
+  console.log(`[+] ${incl.length} kelime bulundu.`);
+  console.log(`[~] kelimeler: ${incl.join(", ")}`);
+})();
