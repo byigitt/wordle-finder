@@ -1,7 +1,6 @@
 import readline from "readline";
 import fs from "fs";
 
-let incl = [];
 const words = JSON.parse(fs.readFileSync("words.json", "utf8"));
 
 const question = (question) => {
@@ -19,18 +18,24 @@ const question = (question) => {
 };
 
 (async () => {
-  let letters = (await question("[+] harfleri birlesik bir bicimde giriniz (ornek: abc): ")).split("");
-  let blacklisted = (await question("[+] yasakli harfleri birlesik bir bicimde giriniz (ornek: abc): ")).split("");
+  while (1) {
+    let letters = (await question("[+] harfleri birlesik bir bicimde giriniz (ornek: abc): ")).split("") || [];
+    let blacklisted =
+      (await question("[+] yasakli harfleri birlesik bir bicimde giriniz (ornek: abc): ")).split("") || [];
 
-  for (let i = 0; i < words.length; i++) {
-    if (
-      letters.every((letter) => words[i].includes(letter)) &&
-      !blacklisted.some((blacklist) => words[i].includes(blacklist))
-    ) {
-      incl.push(words[i]);
+    let incl = [];
+    if (letters.length === 0 && blacklisted.length === 0) break;
+
+    for (let i = 0; i < words.length; i++) {
+      if (
+        letters.every((letter) => words[i].includes(letter)) &&
+        !blacklisted.some((blacklist) => words[i].includes(blacklist))
+      ) {
+        incl.push(words[i]);
+      }
     }
-  }
 
-  console.log(`[+] ${incl.length} kelime bulundu.`);
-  console.log(`[~] kelimeler: ${incl.join(", ")}`);
+    console.log(`[+] ${incl.length} kelime bulundu.`);
+    console.log(`[~] kelimeler: ${incl.join(", ")}\n`);
+  }
 })();
